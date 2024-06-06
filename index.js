@@ -40,6 +40,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Define a route for the root URL ("/")
 app.use("/", require("./src/routes/user_routes.js"));
 
+// Workout Routes
+app.use("/", require("./src/routes/workout_planner_routes.js"));
+
 app.use("/public", express.static("public"));
 
 app.use(express.json());
