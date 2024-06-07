@@ -1,17 +1,36 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const goalSchema = new mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  type: { type: String, required: true },
-  goal_details: {
-    description: String,
-    target_value: Number,
-    current_value: Number,
-    unit: String // e.g., "steps", "calories", "hours"
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
-  deadline: Date,
-  created_at: { type: Date, default: Date.now }
+  goal_details: [
+    {
+      type: { type: String, required: true },
+      description: {
+        type: String,
+      },
+      target_value: {
+        type: Number,
+      },
+      current_value: {
+        type: Number,
+      },
+      unit: {
+        type: String,
+      }, // e.g., "steps", "calories", "hours"
+      deadline: {
+        type: Date,
+      },
+      created_at: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
-const Goal = mongoose.model('Goal', goalSchema);
+const Goal = mongoose.model("Goal", goalSchema);
 module.exports = Goal;
