@@ -11,7 +11,7 @@ exports.exercises_all = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -39,7 +39,7 @@ exports.exercises_bodyPart = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -67,7 +67,7 @@ exports.exercises_equipment = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -95,7 +95,7 @@ exports.exercises_target_muscle = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -123,7 +123,7 @@ exports.exercises_target_muscle = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -147,7 +147,7 @@ exports.all_body_parts = async (req, res) => {
     method: "GET",
     url: "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -171,7 +171,7 @@ exports.all_equipments = async (req, res) => {
     method: "GET",
     url: "https://exercisedb.p.rapidapi.com/exercises/equipmentList",
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -195,7 +195,7 @@ exports.all_target_muscles = async (req, res) => {
     method: "GET",
     url: "https://exercisedb.p.rapidapi.com/exercises/targetList",
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -220,7 +220,7 @@ exports.exercises_name = async(req,res)=>{
     method: "GET",
     url: `https://exercisedb.p.rapidapi.com/exercises/name/${excercise_name}`,
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -244,7 +244,7 @@ exports.exercises_bodyPart_target = async(req,res)=>{
     method: "GET",
     url: `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
     headers: {
-      "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+      "x-rapidapi-key": process.env.x-rapidapi-key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -269,7 +269,7 @@ exports.exercises_bodyPart_equipment = async(req,res)=>{
     method: "GET",
     url: `${host}/exercises/bodyPart/${bodyPart}/equipment/${equipment}`,
     headers: {
-        "x-rapidapi-key": "3c789f9123msh3274719871c0c25p1cf51djsn5d700889e62a",
+        "x-rapidapi-key": process.env.x-rapidapi-key,
         "x-rapidapi-host": "exercisedb.p.rapidapi.com",
       },
   };
