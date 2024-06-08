@@ -3,7 +3,6 @@ mongoose.set("strictQuery", true);
 exports.connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.Mongo_URI);
-    // console.log(process.env.Mongo_URI);
     if (conn) {
         console.log("Database connected successfully");
     }

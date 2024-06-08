@@ -58,5 +58,5 @@ app.set("view engine", "ejs");
 // Start the Express server
 connectDB();
 app.listen(process.env.port, () => {
-  console.log(`app listening on http://localhost:${process.env.port}/`);
+  console.log(`app listening on ${process.env.host}`);
 });
