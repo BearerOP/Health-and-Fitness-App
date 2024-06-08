@@ -13,62 +13,76 @@ exports.user_goal_added = async (req, res) => {
       const unit = req.body.unit;
       const deadline = req.body.deadline;
 
-      let goal_data = await goalModel.findOne({ user_id: user_id });
-      if (goal_data) {
-        goal_data.goal_details.push({
-          type: type,
-          description: description,
-          target_value: target_value,
-          current_value: current_value,
-          unit: unit,
-          deadline: deadline,
-        });
-        let added_goal = await goalModel.findOneAndUpdate(
-          { user_id: user_id },
-          {
-            $set: { goal_details: goal_data.goal_details },
-          },
-          { new: true }
-        );
-        if (added_goal) {
-          return {
-            message: "New goal Added Successfully",
-            success: true,
-          };
+      if (
+        type &&
+        description &&
+        target_value &&
+        current_value &&
+        unit &&
+        deadline
+      ) {
+        let goal_data = await goalModel.findOne({ user_id: user_id });
+        if (goal_data) {
+          goal_data.goal_details.push({
+            type: type,
+            description: description,
+            target_value: target_value,
+            current_value: current_value,
+            unit: unit,
+            deadline: deadline,
+          });
+          let added_goal = await goalModel.findOneAndUpdate(
+            { user_id: user_id },
+            {
+              $set: { goal_details: goal_data.goal_details },
+            },
+            { new: true }
+          );
+          if (added_goal) {
+            return {
+              message: "New goal Added Successfully",
+              success: true,
+            };
+          } else {
+            return {
+              message: "Something Went Wrong",
+              data: [],
+              success: false,
+            };
+          }
         } else {
-          return {
-            message: "Something Went Wrong",
-            data: [],
-            success: false,
-          };
+          // if data doesn't exist, create a new entry
+          let savedata = new goalModel({
+            user_id: user_id,
+            goal_details: [
+              {
+                type: type,
+                description: description,
+                target_value: target_value,
+                current_value: current_value,
+                unit: unit,
+                deadline: deadline,
+              },
+            ],
+          });
+          let saved_data = await savedata.save();
+          if (saved_data)
+            return {
+              message: "goal Added Successfully",
+              success: true,
+            };
+          else {
+            return {
+              message: "Something Went Wrong",
+              success: false,
+            };
+          }
         }
       } else {
-        // if data doesn't exist, create a new entry
-        let savedata = new goalModel({
-          user_id: user_id,
-          goal_details: [
-            {
-              type: type,
-              description: description,
-              target_value: target_value,
-              current_value: current_value,
-              unit: unit,
-              deadline: deadline,
-            },
-          ],
-        });
-        let saved_data = await savedata.save();
-        if (saved_data)
-          return {
-            message: "goal Added Successfully",
-            success: true,
-          };
-        else {
-          return {
-            message: "Something Went Wrong",
-            success: false,
-          };
-        }
+        return {
+          message: "please enter complete details about goal",
+          success: false,
+        };
       }
     } else {
       return {
@@ -89,12 +103,10 @@ exports.user_goal_update = async (req, res) => {
   try {
     let user_id = req.user._id;
     if (user_id) {
-      const _id = req.body._id; // _id ----> Goal_id
-      const type = req.body.type;
+      const _id = req.body._id;
+
       const description = req.body.description;
       const target_value = req.body.target_value;
-      const current_value = req.body.current_value;
-      const unit = req.body.unit;
       const deadline = req.body.deadline;
 
       if (_id) {
@@ -104,12 +116,120 @@ exports.user_goal_update = async (req, res) => {
             (goal_details) => goal_details._id == _id
           );
           if (goal_details) {
-            goal_details.type = type;
-            goal_details.description = description;
-            goal_details.target_value = target_value;
-            goal_details.current_value = current_value;
-            goal_details.unit = unit;
-            goal_details.deadline = deadline;
+            if (description && target_value && deadline) {
+              const type = goal_details.type;
+              const current_value = goal_details.current_value;
+              const unit = goal_details.unit;
+
+              goal_details.type = type;
+              goal_details.description = description;
+              goal_details.target_value = target_value;
+              goal_details.current_value = current_value;
+              goal_details.unit = unit;
+              goal_details.deadline = deadline;
+            } else if (
+              description &&
+              target_value == undefined &&
+              deadline == undefined
+            ) {
+              const t_value = goal_details.target_value;
+              const dead = goal_details.deadline;
+              const type = goal_details.type;
+              const current_value = goal_details.current_value;
+              const unit = goal_details.unit;
+
+              goal_details.type = type;
+              goal_details.description = description;
+              goal_details.target_value = t_value;
+              goal_details.current_value = current_value;
+              goal_details.unit = unit;
+              goal_details.deadline = dead;
+            } else if (
+              description == undefined &&
+              target_value &&
+              deadline == undefined
+            ) {
+              const description = goal_details.description;
+              const dead = goal_details.deadline;
+              const type = goal_details.type;
+              const current_value = goal_details.current_value;
+              const unit = goal_details.unit;
+
+              goal_details.type = type;
+              goal_details.description = description;
+              goal_details.target_value = target_value;
+              goal_details.current_value = current_value;
+              goal_details.unit = unit;
+              goal_details.deadline = dead;
+            } 
+            else if (
+              description == undefined &&
+              target_value == undefined &&
+              deadline
+            ) {
+              const description = goal_details.description;
+              const t_value = goal_details.target_value;
+              const type = goal_details.type;
+              const current_value = goal_details.current_value;
+              const unit = goal_details.unit;
+              goal_details.type = type;
+              goal_details.description = description;
+              goal_details.target_value = t_value;
+              goal_details.current_value = current_value;
+              goal_details.unit = unit;
+              goal_details.deadline = deadline;
+            }
+            else if (
+              description == undefined &&
+              target_value&&
+              deadline
+            ) {
+              const description = goal_details.description;
+              
+              const type = goal_details.type;
+              const current_value = goal_details.current_value;
+              const unit = goal_details.unit;
+              goal_details.type = type;
+              goal_details.description = description;
+              goal_details.target_value = target_value;
+              goal_details.current_value = current_value;
+              goal_details.unit = unit;
+              goal_details.deadline = deadline;
+            }
+            else if (
+              description &&
+              target_value&&
+              deadline== undefined 
+            ) {
+              const dead = goal_details.deadline;
+              
+              const type = goal_details.type;
+              const current_value = goal_details.current_value;
+              const unit = goal_details.unit;
+              goal_details.type = type;
+              goal_details.description = description;
+              goal_details.target_value = target_value;
+              goal_details.current_value = current_value;
+              goal_details.unit = unit;
+              goal_details.deadline = dead;
+            }
+            else if (
+              description &&
+              target_value== undefined &&
+              deadline
+            ) {
+              const target_value = goal_details.target_value;
+              
+              const type = goal_details.type;
+              const current_value = goal_details.current_value;
+              const unit = goal_details.unit;
+              goal_details.type = type;
+              goal_details.description = description;
+              goal_details.target_value = target_value;
+              goal_details.current_value = current_value;
+              goal_details.unit = unit;
+              goal_details.deadline = deadline;
+            }
 
             await goal_data.save();
 
@@ -164,10 +284,9 @@ exports.user_goal_update = async (req, res) => {
 };
 
 exports.user_goal_delete = async (req, res) => {
-
-  const _id = req.body._id; // _id ----> Goal_id
-  const user_id = req.user._id;
   try {
+    const user_id = req.user._id;
+    const _id = req.body._id; // _id --> goal_id
     if (user_id) {
       let arr = [];
       if (_id) {
@@ -194,7 +313,7 @@ exports.user_goal_delete = async (req, res) => {
             );
 
             return {
-              message: "goal deleted successfully",
+              message: "goal delet successfully",
               data: goal_data,
               success: true,
             };
@@ -214,7 +333,7 @@ exports.user_goal_delete = async (req, res) => {
         }
       } else {
         return {
-          message: "_id did not recieve",
+          message: "_id not recive",
           data: [],
           success: false,
         };
