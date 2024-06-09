@@ -57,7 +57,7 @@ exports.user_login = async (req, res) => {
 };
 
 exports.user_register = async (req, res) => {
-  const { username, mobile, password } = req.body;
+  const { username, mobile, password, weight, height,dob, gender, } = req.body;
   try {
     const existingUser = await user_model.findOne({ mobile });
 
@@ -74,6 +74,10 @@ exports.user_register = async (req, res) => {
       username,
       mobile,
       password: hashedPassword,
+      weight,
+      height,
+      dob,
+      gender,
     });
 
     if (newUser) {
