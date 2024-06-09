@@ -8,9 +8,8 @@ const {
     all_target_muscles,
     exercises_name,
     exercises_bodyPart_target,
-    exercises_bodyPart_equipment,
-    exercises_equipment_target,
-    exercises_bodyPart_equipment_target,
+    all_workout_plans,
+    workout_plans_muscles
  } = require('../services/workout_planner_service.js');
 
 exports.exercises_all = async (req, res) => {
@@ -112,9 +111,9 @@ exports.all_target_muscles = async (req, res) => {
     }
   };
 
-  exports.exercises_bodyPart_equipment = async (req, res) => {
+  exports.all_workout_plans = async (req, res) => {
     try {
-      const data = await exercises_bodyPart_equipment(req,res);
+      const data = await all_workout_plans(req,res);
       if (data.success) {
         res.status(200).json(data.data);
       }
@@ -123,3 +122,13 @@ exports.all_target_muscles = async (req, res) => {
     }
   };
 
+  exports.workout_plans_muscles = async (req, res) => {
+    try {
+      const data = await workout_plans_muscles(req,res);
+      if (data.success) {
+        res.status(200).json(data.data);
+      }
+    } catch (error) {
+        res.status(500).json(data);
+    }
+  };
