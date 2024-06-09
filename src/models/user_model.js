@@ -4,9 +4,15 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   mobile: { type: String, required: true },
   password: { type: String, required: true },
-  height: { type: Number }, // in centimeters or inches
-  weight: { type: Number }, // in kilograms or pounds
-  gender: { type: String, enum: ["male", "female", "other"] },
+  weight: {
+    type: Number, // User's weight in kilograms
+    required: true,
+  },
+  height: {
+    type: Number, // User's height in centimeters
+    required: true,
+  },
+  gender: { type: String, enum: ["male", "female", "transMale","transFemale","nonBinary"] },
   auth_key: {
     type: String,
     default: null,
