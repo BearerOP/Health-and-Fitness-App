@@ -46,6 +46,9 @@ app.use("/", require("./src/routes/workout_planner_routes.js"));
 // Goal Setting Routes
 app.use("/", require("./src/routes/goal_setting_routes.js"));
 
+// Step Routes
+app.use("/", require("./src/routes/step_routes.js"));
+
 app.use("/public", express.static("public"));
 
 app.use(express.json());
