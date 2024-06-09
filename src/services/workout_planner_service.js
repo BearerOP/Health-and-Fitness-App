@@ -3,6 +3,7 @@ const axios = require("axios");
 const host = "https://exercisedb.p.rapidapi.com";
 
 exports.exercises_all = async (req, res) => {
+  console.log(process.env.x_rapidapi_key);
   const options = {
     method: "GET",
     url: `${host}/exercises`,
@@ -11,7 +12,7 @@ exports.exercises_all = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -39,7 +40,7 @@ exports.exercises_bodyPart = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -67,7 +68,7 @@ exports.exercises_equipment = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -95,7 +96,7 @@ exports.exercises_target_muscle = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -123,7 +124,7 @@ exports.exercises_target_muscle = async (req, res) => {
       offset: "0",
     },
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -147,7 +148,7 @@ exports.all_body_parts = async (req, res) => {
     method: "GET",
     url: "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -171,7 +172,7 @@ exports.all_equipments = async (req, res) => {
     method: "GET",
     url: "https://exercisedb.p.rapidapi.com/exercises/equipmentList",
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -195,7 +196,7 @@ exports.all_target_muscles = async (req, res) => {
     method: "GET",
     url: "https://exercisedb.p.rapidapi.com/exercises/targetList",
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -212,15 +213,15 @@ exports.all_target_muscles = async (req, res) => {
       data: error,
     };
   }
-}
+};
 
-exports.exercises_name = async(req,res)=>{
+exports.exercises_name = async (req, res) => {
   const excercise_name = req.body.excercise_name;
   const options = {
     method: "GET",
     url: `https://exercisedb.p.rapidapi.com/exercises/name/${excercise_name}`,
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -236,15 +237,15 @@ exports.exercises_name = async(req,res)=>{
       data: error,
     };
   }
-}
+};
 
-exports.exercises_bodyPart_target = async(req,res)=>{
+exports.exercises_bodyPart_target = async (req, res) => {
   const bodyPart = req.body.bodyPart;
   const options = {
     method: "GET",
     url: `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
     headers: {
-      "x-rapidapi-key": process.env.x-rapidapi-key,
+      "x-rapidapi-key": process.env.x_rapidapi_key,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -257,21 +258,45 @@ exports.exercises_bodyPart_target = async(req,res)=>{
   } catch (error) {
     return {
       success: false,
-      data: error,  
+      data: error,
     };
   }
-}
+};
 
-exports.exercises_bodyPart_equipment = async(req,res)=>{
-  const bodyPart = req.body.bodyPart;
-  const equipment = req.body.equipment;
+exports.all_workout_plans = async (req, res) => {
   const options = {
     method: "GET",
-    url: `${host}/exercises/bodyPart/${bodyPart}/equipment/${equipment}`,
+    url: "https://work-out-api1.p.rapidapi.com/search",
     headers: {
-        "x-rapidapi-key": process.env.x-rapidapi-key,
-        "x-rapidapi-host": "exercisedb.p.rapidapi.com",
-      },
+      "x-rapidapi-key": process.env.x_rapidapi_key,
+      "x-rapidapi-host": "work-out-api1.p.rapidapi.com",
+    },
+  };
+  try {
+    const response = await axios.request(options);
+    console.log(response);
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: error,
+    };
+  }
+};
+
+exports.workout_plans_muscles = async (req, res) => {
+  const muscles = req.body.muscles;
+  const options = {
+    method: "GET",
+    params: { Muscles: `${muscles}` },
+    url: "https://work-out-api1.p.rapidapi.com/search",
+    headers: {
+      "x-rapidapi-key": process.env.x_rapidapi_key,
+      "x-rapidapi-host": "work-out-api1.p.rapidapi.com",
+    },
   };
   try {
     const response = await axios.request(options);
