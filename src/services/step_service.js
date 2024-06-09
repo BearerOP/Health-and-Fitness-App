@@ -146,73 +146,75 @@ exports.view_step_daily = async (req, res) => {
 };
 
 exports.view_step_weekly = async (req, res) => {
-    const user = req.user;
-    const currentDate = new Date();
-    const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000); // 7 days ago
-  
-    try {
-      const stepData = await step_model.findOne({
-        user_id: new mongoose.Types.ObjectId(user._id),
+  const user = req.user;
+  const currentDate = new Date();
+  const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000); // 7 days ago
+
+  try {
+    const stepData = await step_model.findOne({
+      user_id: new mongoose.Types.ObjectId(user._id),
+    });
+
+    if (stepData) {
+      const filteredRecords = stepData.record.filter(
+        (record) => record.date >= oneWeekAgo && record.date <= currentDate
+      );
+      return res.status(200).json({
+        success: true,
+        message: "Weekly data fetched successfully",
+        data: filteredRecords,
       });
-  
-      if (stepData) {
-        const filteredRecords = stepData.record.filter(
-          (record) => record.date >= oneWeekAgo && record.date <= currentDate
-        );
-        return res.status(200).json({
-          success: true,
-          message: "Weekly data fetched successfully",
-          data: filteredRecords,
-        });
-      } else {
-        return res.status(404).json({
-          success: false,
-          message: "Weekly data not found",
-          data: [],
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching weekly data:", error);
-      return res.status(500).json({
+    } else {
+      return res.status(404).json({
         success: false,
-        message: "Error fetching weekly data",
-        error: error.message,
+        message: "Weekly data not found",
+        data: [],
       });
     }
-  };
-  
-  exports.view_step_monthly = async (req, res) => {
-    const user = req.user;
-    const currentDate = new Date();
-    const oneMonthAgo = new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000); // 30 days ago
-  
-    try {
-      const stepData = await step_model.findOne({
-        user_id: new mongoose.Types.ObjectId(user._id),
+  } catch (error) {
+    console.error("Error fetching weekly data:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching weekly data",
+      error: error.message,
+    });
+  }
+};
+
+exports.view_step_monthly = async (req, res) => {
+  const user = req.user;
+  const currentDate = new Date();
+  const oneMonthAgo = new Date(
+    currentDate.getTime() - 30 * 24 * 60 * 60 * 1000
+  ); // 30 days ago
+
+  try {
+    const stepData = await step_model.findOne({
+      user_id: new mongoose.Types.ObjectId(user._id),
+    });
+
+    if (stepData) {
+      const filteredRecords = stepData.record.filter(
+        (record) => record.date >= oneMonthAgo && record.date <= currentDate
+      );
+      return res.status(200).json({
+        success: true,
+        message: "Monthly data fetched successfully",
+        data: filteredRecords,
       });
-  
-      if (stepData) {
-        const filteredRecords = stepData.record.filter(
-          (record) => record.date >= oneMonthAgo && record.date <= currentDate
-        );
-        return res.status(200).json({
-          success: true,
-          message: "Monthly data fetched successfully",
-          data: filteredRecords,
-        });
-      } else {
-        return res.status(404).json({
-          success: false,
-          message: "Monthly data not found",
-          data: [],
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching monthly data:", error);
-      return res.status(500).json({
+    } else {
+      return res.status(404).json({
         success: false,
-        message: "Error fetching monthly data",
-        error: error.message,
+        message: "Monthly data not found",
+        data: [],
       });
     }
-  };
+  } catch (error) {
+    console.error("Error fetching monthly data:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching monthly data",
+      error: error.message,
+    });
+  }
+};

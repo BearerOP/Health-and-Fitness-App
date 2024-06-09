@@ -3,7 +3,6 @@ const axios = require("axios");
 const host = "https://exercisedb.p.rapidapi.com";
 
 exports.exercises_all = async (req, res) => {
-  console.log(process.env.x_rapidapi_key);
   const options = {
     method: "GET",
     url: `${host}/exercises`,
@@ -274,7 +273,6 @@ exports.all_workout_plans = async (req, res) => {
   };
   try {
     const response = await axios.request(options);
-    console.log(response);
     return {
       success: true,
       data: response.data,
