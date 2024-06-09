@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   gender: { type: String, enum: ["male", "female", "transMale","transFemale","nonBinary"] },
   food_preference:{
     type: String,
-    enum: ["veg", "nonVeg","vegan"],
+    enum: ["veg", "nonVeg"],
   },
   auth_key: {
     type: String,
