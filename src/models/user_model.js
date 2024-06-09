@@ -12,7 +12,15 @@ const userSchema = new mongoose.Schema({
     type: Number, // User's height in centimeters
     required: true,
   },
+  dob:{
+    type: Date,
+    required: true,
+  },
   gender: { type: String, enum: ["male", "female", "transMale","transFemale","nonBinary"] },
+  food_preference:{
+    type: String,
+    enum: ["veg", "nonVeg","vegan"],
+  },
   auth_key: {
     type: String,
     default: null,
