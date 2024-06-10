@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const reminderModel = require("../models/reminder_model");
-const { sendNotification, getUserToken } = require("../../public/utils/notification.js");
+const {
+  sendNotification,
+  getUserToken,
+} = require("../../public/utils/notification.js");
 const schedule = require("node-schedule");
 
 const scheduleReminder = (reminderId, info) => {
@@ -92,8 +95,8 @@ exports.create_reminder = async (req, res) => {
     const user_id = req.user.id;
 
     if (user_id) {
-      const { type, message, time, repeat } = req.body;
-      const reminderInfo = { type, message, time, repeat };
+      const { type, title, message, time, repeat } = req.body;
+      const reminderInfo = { type, message, time, repeat, title };
       const response = await createOrUpdateReminder(user_id, reminderInfo);
 
       if (response.success) {
@@ -110,7 +113,7 @@ exports.create_reminder = async (req, res) => {
     }
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).json({ error});
+    res.status(500).json({ error });
   }
 };
 
