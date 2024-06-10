@@ -6,7 +6,7 @@ const TeleSignSDK = require("telesignsdk");
 
 exports.user_login = async (req, res) => {
   try {
-    const { mobile, password } = req.body;
+    const { mobile, password, fcm_token } = req.body;
     const existingUser = await user_model.findOne({ mobile });
     if (!existingUser) {
       return {
@@ -35,7 +35,7 @@ exports.user_login = async (req, res) => {
     res.cookie("token", token);
     const authKeyInsertion = await user_model.findOneAndUpdate(
       { _id: existingUser._id },
-      { auth_key: token },
+      { auth_key: token, notificationToken: fcm_token },
       { new: true }
     );
 
@@ -57,7 +57,7 @@ exports.user_login = async (req, res) => {
 };
 
 exports.user_register = async (req, res) => {
-  const { username, mobile, password, weight, height,dob, gender, } = req.body;
+  const { username, mobile, password, weight, height, dob, gender } = req.body;
   try {
     const existingUser = await user_model.findOne({ mobile });
 
@@ -128,8 +128,6 @@ exports.user_logout = async (req, res) => {
   }
 };
 
-
-
 const customerId = process.env.CUSTOMER_ID;
 const apiKey = process.env.API_KEY;
 
@@ -146,50 +144,59 @@ exports.sendOtp = async (req, res) => {
   async function sendOtp(mobile) {
     try {
       const response = await new Promise((resolve, reject) => {
-        client.sms.message((error, responseBody) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(responseBody);
-          }
-        }, mobile, message, messageType);
+        client.sms.message(
+          (error, responseBody) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(responseBody);
+            }
+          },
+          mobile,
+          message,
+          messageType
+        );
       });
 
       return {
         success: true,
         message: "OTP sent successfully",
         data: response,
-        otp: otp
+        otp: otp,
       };
     } catch (error) {
       console.error("Unable to send SMS. Error:\n\n" + error);
       return {
         success: false,
         message: "Failed to send OTP",
-        error: error
+        error: error,
       };
     }
   }
 
   try {
     const result = await sendOtp(mobile);
-    if (result.success)
-      {
-        return{
-          success: true,
-          message: "OTP sent successfully",
-          data: result
-        }
-      }
-    else {
+    if (result.success) {
+      return {
+        success: true,
+        message: "OTP sent successfully",
+        data: result,
+      };
+    } else {
       return {
         success: false,
         message: "Failed to send OTP",
-        error: result
+        error: result,
       };
     }
   } catch (error) {
     console.error("Error: ", error);
-    res.status(500).json({ success: false, message: "An unexpected error occurred", error: error });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "An unexpected error occurred",
+        error: error,
+      });
   }
 };
