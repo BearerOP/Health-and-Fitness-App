@@ -1,6 +1,5 @@
 const admin = require("firebase-admin");
-const userModel = require("../models/user_model");
-const path = require("path");
+const userModel = require("../../src/models/user_model");
 
 // Initialize Firebase Admin SDK
 if (!admin.apps.length) {
