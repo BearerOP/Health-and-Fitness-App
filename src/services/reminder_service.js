@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const reminderModel = require("../models/reminder_model");
-const { sendNotification, getUserToken } = require("../services/notification");
+const { sendNotification, getUserToken } = require("../../public/utils/notification.js");
 const schedule = require("node-schedule");
 
 const scheduleReminder = (reminderId, info) => {
