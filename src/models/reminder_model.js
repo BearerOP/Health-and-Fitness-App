@@ -8,12 +8,26 @@ const reminderSchema = new mongoose.Schema({
   },
   reminder_info: [
     {
-      type: { type: String, required: true },
+      type: {
+        type: String,
+        required: true,
+        enum: ["sleep", "medication", "mental_health", "physical", "meal"],
+      },
+      title: {
+        type: String,
+        required: true,
+      },
       message: {
         type: String,
       },
-      time: { type: Date, required: true },
-      repeat: { type: String },
+      time: { 
+        type: Date, 
+        required: true 
+      },
+      repeat: { 
+        type: String,
+        default:'none',
+      },
       created_at: {
         type: Date,
         default: Date.now,
