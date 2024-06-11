@@ -52,6 +52,9 @@ app.use("/", require("./src/routes/step_routes.js"));
 // Reminder Routes
 app.use("/", require("./src/routes/reminder_routes.js"));
 
+// Sleep Patterns
+app.use("/", require("./src/routes/sleep_patterns_routes.js"));
+
 app.use("/public", express.static("public"));
 
 app.use(express.json());
