@@ -220,3 +220,74 @@ exports.sleep_view = async (req, res) => {
     };
   }
 };
+
+exports.sleep_weekly_avg = async (req, res) => {
+  try {
+    let weekDate = req.body.weekDate;
+    if (!weekDate) {
+      weekDate = new Date();
+    } else {
+      weekDate = new Date(weekDate);
+    }
+
+
+    weekDate.setHours(0, 0, 0, 0);
+    // Check if req.user exists and has _id property
+    if (!req.user || !req.user._id) {
+      return {
+        success: false,
+        message: "User not authenticated",
+      };
+    }
+    const user = req.user;
+
+    const sleepData = await sleep_model.findOne({ user_id: user._id });
+    if (!sleepData) {
+      return {
+        success: false,
+        message: "No sleep data found",
+      };51
+    }
+    const lastWeekRecords = sleepData.record.filter((entry) => {
+      const entryDate = new Date(entry.sleepTime);
+      return entryDate >= weekDate - 7 * 24 * 60 * 60 * 1000;
+    });
+
+    if (lastWeekRecords.length === 0) {
+      return {
+        success: false,
+        message: "No sleep data found for the last week",
+      };
+    }
+
+    // Calculate total hours and minutes for the last week
+    let totalHours = 0;
+    let totalMinutes = 0;
+    lastWeekRecords.forEach((entry) => {
+      totalHours += entry.duration.hour;
+      totalMinutes += entry.duration.minute;
+    });
+
+    // Calculate average sleep duration
+    const totalEntries = lastWeekRecords.length;
+    const totalSleepMinutes = totalHours * 60 + totalMinutes;
+    const avgMinutes = totalSleepMinutes / totalEntries;
+    const avgHours = Math.floor(avgMinutes / 60);
+    const remainingMinutes = Math.floor(avgMinutes % 60);
+
+    return {
+      success: true,
+      message: "Last week's sleep data fetched successfully",
+      data: {
+        hour: avgHours,
+        minute: remainingMinutes,
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Internal server error",
+      error,
+    };
+  }
+};
