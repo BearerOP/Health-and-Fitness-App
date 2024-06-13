@@ -46,7 +46,7 @@ exports.user_login = async (req, res) => {
     return {
       message: "User logged in successfully",
       success: true,
-      token
+      token,
     };
   } catch (error) {
     console.log(error);
@@ -58,7 +58,16 @@ exports.user_login = async (req, res) => {
 };
 
 exports.user_register = async (req, res) => {
-  const { username, mobile, password, weight, height, dob, gender } = req.body;
+  const {
+    username,
+    mobile,
+    password,
+    weight,
+    height,
+    dob,
+    gender,
+    food_preference,
+  } = req.body;
   try {
     const existingUser = await user_model.findOne({ mobile });
 
@@ -79,6 +88,7 @@ exports.user_register = async (req, res) => {
       height,
       dob,
       gender,
+      food_preference,
     });
 
     if (newUser) {
@@ -192,12 +202,34 @@ exports.sendOtp = async (req, res) => {
     }
   } catch (error) {
     console.error("Error: ", error);
-    res
-      .status(500)
-      .json({
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+      error: error,
+    };
+  }
+};
+
+exports.user_profile = async (req, res) => {
+  const user = req.user;
+  try {
+    if (!user) {
+      return {
         success: false,
-        message: "An unexpected error occurred",
-        error: error,
-      });
+        message: "User not found",
+      };
+    }
+
+    return {
+      success: true,
+      data: user,
+    };
+  } catch (error) {
+    console.error("Error: ", error);
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+      error: error,
+    };
   }
 };

@@ -1,4 +1,4 @@
-const { user_login,user_register,user_logout, sendOtp } = require("../services/user_validation_service.js")
+const { user_login,user_register,user_logout, sendOtp, user_profile} = require("../services/user_validation_service.js")
 
 exports.user_login = async (req, res) => {
     try {
@@ -46,6 +46,18 @@ exports.user_login = async (req, res) => {
         res.status(200).json({data:data.data});
       } else {
         res.status(500).json(data.data);
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+
+  exports.user_profile = async (req, res) => {
+    try {
+      const data = await user_profile(req, res);
+      if (data.success) {
+        res.status(200).json(data);
       }
     } catch (error) {
       console.log("Error: ", error);
