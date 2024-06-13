@@ -40,7 +40,7 @@ exports.view_user_goal = async (req, res) => {
     try {
       const data = await view_user_goal(req, res);
       if(data.success) {
-        res.status(200).send(data.goal_data)
+        res.status(200).send(data.data)
       } else{
           res.status(403).json(data);
       }
