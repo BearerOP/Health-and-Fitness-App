@@ -8,7 +8,14 @@ const goalSchema = new mongoose.Schema({
   },
   goal_details: [
     {
-      type: { type: String, required: true },
+      title: { 
+        type: String, 
+        require: true 
+      },
+      type: { 
+        type: String, 
+        required: true 
+      },
       description: {
         type: String,
       },
@@ -20,7 +27,8 @@ const goalSchema = new mongoose.Schema({
       },
       unit: {
         type: String,
-      }, // e.g., "steps", "calories", "hours"
+        enum: ["steps", "calories", "hours", "doses"],
+      },
       deadline: {
         type: Date,
       },

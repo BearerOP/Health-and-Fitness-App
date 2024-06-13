@@ -210,10 +210,24 @@ exports.get_reminders = async (req, res) => {
     let user_id = req.user.id;
     if (user_id) {
       let reminderData = await reminderModel.findOne({ user_id: user_id });
+      console.log(reminderData);
+      const groupByReminderType = (reminderInfo) => {
+        return reminderInfo.reduce((acc, reminder) => {
+          const { type, title, message, time, repeat, created_at, _id } = reminder;
+          if (!acc[type]) {
+            acc[type] = [];
+          }
+          acc[type].push({ title, message, time, repeat, created_at, _id });
+          return acc;
+        }, {});
+      };
+      
+      const groupedReminders = groupByReminderType(reminderData.reminder_info);
+      
       if (reminderData) {
         return {
           message: "Reminders fetched successfully",
-          data: reminderData.reminder_info,
+          data: groupedReminders,
           success: true,
         };
       } else {
